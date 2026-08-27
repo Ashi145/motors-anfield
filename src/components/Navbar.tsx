@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Sun, Moon } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { PHONE_HREF } from "@/data/content";
+import { useTheme } from "@/lib/theme";
 
 const links = [
   { to: "/", label: "Home" },
@@ -18,6 +19,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -85,6 +87,13 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggle}
+              className="flex h-11 w-11 items-center justify-center border border-line text-bone transition-colors hover:border-blood hover:text-blood"
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
             <a
               href={PHONE_HREF}
               className="hidden items-center gap-2 border border-line px-5 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-bone transition-all duration-300 hover:border-blood hover:bg-blood hover:text-white sm:flex"
@@ -157,6 +166,15 @@ export default function Navbar() {
               transition={{ delay: 0.5 }}
               className="px-8 pb-10"
             >
+              <div className="mb-4 flex justify-center">
+                <button
+                  onClick={toggle}
+                  className="flex h-12 w-12 items-center justify-center border border-line text-bone transition-colors hover:border-blood hover:text-blood"
+                  aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                >
+                  {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                </button>
+              </div>
               <a
                 href={PHONE_HREF}
                 className="flex w-full items-center justify-center gap-3 bg-blood py-4 font-mono text-xs font-bold uppercase tracking-[0.2em] text-white"

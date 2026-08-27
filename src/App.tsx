@@ -10,6 +10,7 @@ import Parts from "@/pages/Parts";
 import Story from "@/pages/Story";
 import Contact from "@/pages/Contact";
 import { markLoaded } from "@/lib/firstLoad";
+import ThemeProvider from "@/lib/theme";
 
 /* ------------------------------ Scroll to top ------------------------------ */
 
@@ -114,12 +115,14 @@ export default function App() {
   }, []);
 
   return (
-    <HashRouter>
-      <ScrollToTop />
-      <AnimatePresence>{loading && <Preloader />}</AnimatePresence>
-      <Navbar />
-      <AnimatedRoutes />
-      <Footer />
-    </HashRouter>
+    <ThemeProvider>
+      <HashRouter>
+        <ScrollToTop />
+        <AnimatePresence>{loading && <Preloader />}</AnimatePresence>
+        <Navbar />
+        <AnimatedRoutes />
+        <Footer />
+      </HashRouter>
+    </ThemeProvider>
   );
 }
