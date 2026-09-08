@@ -1,181 +1,128 @@
-import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Phone } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Search, ShoppingCart, User } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { PHONE_HREF } from "@/data/content";
-import BrandLogo from "@/components/BrandLogo";
-import ThemeSwitcher, { ThemeChoices } from "@/components/ThemeSwitcher";
+import { categories } from "@/data/content";
+import { useCart } from "@/lib/cart";
+import Logo from "@/components/Logo";
 
-const links = [
-  { to: "/", label: "Home" },
+const categoryLinks = [
+  { to: "/shop", label: "All Products" },
+  ...categories.slice(0, 6).map((c) => ({ to: `/shop?cat=${c.id}`, label: c.name })),
+  { to: "/services", label: "Services" },
   { to: "/brands", label: "Brands" },
-  { to: "/engines", label: "Engines" },
-  { to: "/parts", label: "Spare Parts" },
-  { to: "/story", label: "Our Story" },
+  { to: "/story", label: "About" },
   { to: "/contact", label: "Contact" },
 ];
 
+function SearchBar({ className }: { className?: string }) {
+  const [q, setQ] = useState("");
+  const navigate = useNavigate();
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    const query = q.trim();
+    navigate(query ? `/shop?q=${encodeURIComponent(query)}` : "/shop");
+  }
+
+  return (
+    <form onSubmit={onSubmit} className={cn("flex w-full items-center", className)}>
+      <div className="flex h-11 flex-1 items-center overflow-hidden rounded-lg rounded-r-none border border-line bg-mist focus-within:border-blood">
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Search parts, tools, scanners…"
+          className="h-full w-full bg-transparent px-4 text-sm text-bone outline-none placeholder:text-smoke/70"
+        />
+      </div>
+      <button
+        type="submit"
+        className="flex h-11 items-center gap-2 rounded-lg rounded-l-none bg-blood px-5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-ember"
+        aria-label="Search"
+      >
+        <Search className="h-4 w-4" />
+        <span className="hidden sm:inline">Search</span>
+      </button>
+    </form>
+  );
+}
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const { count, setOpen } = useCart();
   const location = useLocation();
-  const overDarkHero = location.pathname === "/" && !scrolled;
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   return (
-    <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-          overDarkHero && "media-dark",
-          scrolled ? "border-b border-line bg-ink/85 backdrop-blur-xl" : "bg-transparent"
-        )}
-      >
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="group flex items-center gap-3">
-            <BrandLogo className="h-14 w-[88px] transition-transform duration-300 group-hover:scale-[1.03]" />
-            <span className="hidden min-w-0 leading-none sm:block">
-              <span className="block truncate font-mono text-[9px] uppercase tracking-[0.35em] text-smoke">
-                Kireka
-              </span>
-              <span className="mt-1 block truncate font-mono text-[8px] uppercase tracking-[0.25em] text-blood">
-                Scan first · Fix right
-              </span>
-            </span>
-          </Link>
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b border-line bg-white transition-shadow duration-300",
+        scrolled && "shadow-[0_6px_24px_rgba(22,22,26,0.07)]"
+      )}
+    >
+      {/* main row */}
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 md:h-[72px]">
+        <Logo />
 
-          <nav className="hidden items-center gap-8 lg:flex">
-            {links.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                className={({ isActive }) =>
-                  cn(
-                    "relative font-mono text-[11px] font-medium uppercase tracking-[0.25em] transition-colors duration-300",
-                    isActive ? "text-blood" : "text-smoke hover:text-bone"
-                  )
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {l.label}
-                    <span
-                      className={cn(
-                        "absolute -bottom-2 left-0 h-px bg-blood transition-all duration-300",
-                        isActive ? "w-full" : "w-0"
-                      )}
-                    />
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
+        <SearchBar className="ml-auto hidden max-w-xl flex-1 md:flex" />
 
-          <div className="flex items-center gap-3">
-            <ThemeSwitcher />
-            <a
-              href={PHONE_HREF}
-              className="hidden items-center gap-2 border border-line px-5 py-2.5 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-bone transition-all duration-300 hover:border-blood hover:bg-blood hover:text-white sm:flex"
-            >
-              <Phone className="h-3.5 w-3.5" />
-              Book service
-            </a>
-            <button
-              onClick={() => setOpen(true)}
-              className="flex h-11 w-11 items-center justify-center border border-line text-bone transition-colors hover:border-blood hover:text-blood lg:hidden"
-              aria-label="Open menu"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-      </motion.header>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="noise fixed inset-0 z-[60] flex flex-col bg-ink"
+        <div className="ml-auto flex items-center gap-1.5 md:ml-0">
+          <button
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-smoke transition-colors hover:text-blood"
+            aria-label="Account"
           >
-            <div className="flex h-20 items-center justify-between px-6">
-              <BrandLogo className="h-16 w-24" />
-              <button
-                onClick={() => setOpen(false)}
-                className="flex h-11 w-11 items-center justify-center border border-line text-bone transition-colors hover:border-blood hover:text-blood"
-                aria-label="Close menu"
+            <User className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => setOpen(true)}
+            className="relative flex h-11 items-center gap-2 rounded-lg px-3 text-smoke transition-colors hover:text-blood"
+            aria-label="Open cart"
+          >
+            <ShoppingCart className="h-5 w-5" />
+            <span className="hidden text-sm font-semibold text-bone lg:inline">Cart</span>
+            {count > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-blood px-1 text-[11px] font-bold text-white">
+                {count}
+              </span>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* search on mobile */}
+      <div className="border-t border-line px-4 py-2.5 md:hidden">
+        <SearchBar />
+      </div>
+
+      {/* category strip */}
+      <nav className="border-t border-line bg-white">
+        <div className="no-scrollbar mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6">
+          {categoryLinks.map((l) => {
+            const [path, qs] = l.to.split("?");
+            const active =
+              location.pathname === path &&
+              (qs ? location.search.includes(qs) : !location.search);
+            return (
+              <Link
+                key={l.to + l.label}
+                to={l.to}
+                className={cn(
+                  "whitespace-nowrap border-b-2 px-3 py-3 text-[13px] font-semibold transition-colors",
+                  active ? "border-blood text-blood" : "border-transparent text-smoke hover:text-blood"
+                )}
               >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            <nav className="flex flex-1 flex-col justify-center px-8">
-              {links.map((l, i) => (
-                <motion.div
-                  key={l.to}
-                  initial={{ opacity: 0, x: -32 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.08 + i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <NavLink
-                    to={l.to}
-                    className={({ isActive }) =>
-                      cn(
-                        "group flex items-baseline gap-4 border-b border-line py-5",
-                        isActive ? "text-blood" : "text-bone"
-                      )
-                    }
-                  >
-                    <span className="font-mono text-xs text-blood">0{i + 1}</span>
-                    <span className="font-display text-4xl font-semibold uppercase tracking-tight transition-transform duration-300 group-hover:translate-x-2">
-                      {l.label}
-                    </span>
-                  </NavLink>
-                </motion.div>
-              ))}
-            </nav>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="px-8 pb-8"
-            >
-              <p className="mb-3 font-mono text-[9px] uppercase tracking-[0.3em] text-smoke">
-                Theme on this browser
-              </p>
-              <ThemeChoices className="mb-4" />
-              <a
-                href={PHONE_HREF}
-                className="flex w-full items-center justify-center gap-3 bg-blood py-4 font-mono text-xs font-bold uppercase tracking-[0.2em] text-white"
-              >
-                <Phone className="h-4 w-4" /> Call the workshop
-              </a>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+                {l.label}
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+    </header>
   );
 }

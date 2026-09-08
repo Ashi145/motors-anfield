@@ -1,14 +1,10 @@
-import { useEffect, useRef, type ReactNode, type MouseEvent } from "react";
-import {
-  motion,
-  useInView,
-  useMotionValue,
-  useSpring,
-  animate,
-} from "framer-motion";
+import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
+  Star,
+  StarHalf,
   Cylinder,
   Waves,
   Disc3,
@@ -22,6 +18,20 @@ import {
   Mountain,
   CircleCheck,
   Activity,
+  Cable,
+  CircuitBoard,
+  BatteryCharging,
+  SearchCheck,
+  ShieldAlert,
+  Lightbulb,
+  Car,
+  Headphones,
+  Truck,
+  CreditCard,
+  CircleDollarSign,
+  BadgeCheck,
+  Boxes,
+  Package,
   Phone,
   MessageCircle,
   type LucideIcon,
@@ -45,6 +55,20 @@ const iconMap: Record<string, LucideIcon> = {
   Mountain,
   CircleCheck,
   Activity,
+  Cable,
+  CircuitBoard,
+  BatteryCharging,
+  SearchCheck,
+  ShieldAlert,
+  Lightbulb,
+  Car,
+  Headphones,
+  Truck,
+  CreditCard,
+  CircleDollarSign,
+  BadgeCheck,
+  Boxes,
+  Package,
 };
 
 export function IconByName({ name, className }: { name: string; className?: string }) {
@@ -58,7 +82,7 @@ export function Reveal({
   children,
   delay = 0,
   className,
-  y = 28,
+  y = 24,
 }: {
   children: ReactNode;
   delay?: number;
@@ -70,8 +94,8 @@ export function Reveal({
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
@@ -84,7 +108,7 @@ export function SectionTag({ children, className }: { children: ReactNode; class
   return (
     <div
       className={cn(
-        "flex items-center gap-3 font-mono text-[11px] font-medium tracking-[0.35em] uppercase text-blood whitespace-nowrap",
+        "flex items-center gap-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.3em] text-blood",
         className
       )}
     >
@@ -94,133 +118,71 @@ export function SectionTag({ children, className }: { children: ReactNode; class
   );
 }
 
-/* ------------------------------ Marquee ------------------------------ */
+/* ------------------------------ SectionHeading ------------------------------ */
 
-export function Marquee({ items, className }: { items: string[]; className?: string }) {
-  const row = [...items, ...items];
+export function SectionHeading({
+  tag,
+  title,
+  action,
+  className,
+}: {
+  tag: string;
+  title: ReactNode;
+  action?: ReactNode;
+  className?: string;
+}) {
   return (
-    <div className={cn("relative overflow-hidden border-y border-line bg-coal py-5", className)}>
-      <div className="flex w-max animate-marquee items-center">
-        {row.map((item, i) => (
-          <span key={i} className="flex items-center">
-            <span className="px-8 font-display text-2xl font-medium uppercase tracking-wide text-bone/80 whitespace-nowrap">
-              {item}
-            </span>
-            <span className="inline-block h-2.5 w-2.5 rotate-45 bg-blood" />
-          </span>
-        ))}
+    <div className={cn("flex flex-col justify-between gap-4 md:flex-row md:items-end", className)}>
+      <div>
+        <Reveal>
+          <SectionTag>{tag}</SectionTag>
+        </Reveal>
+        <Reveal delay={0.06}>
+          <h2 className="mt-4 max-w-2xl font-display text-3xl font-semibold uppercase leading-[1.05] tracking-tight text-bone md:text-4xl lg:text-[2.6rem]">
+            {title}
+          </h2>
+        </Reveal>
       </div>
-    </div>
-  );
-}
-
-/* ------------------------------ Counter ------------------------------ */
-
-export function Counter({ value, suffix = "", label }: { value: number; suffix?: string; label: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const mv = useMotionValue(0);
-  const rounded = useMotionValue("0");
-
-  useEffect(() => {
-    if (!inView) return;
-    const controls = animate(mv, value, {
-      duration: 1.8,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (v) => rounded.set(Math.round(v).toLocaleString()),
-    });
-    return () => controls.stop();
-  }, [inView, mv, value, rounded]);
-
-  return (
-    <div ref={ref} className="border-l-2 border-blood pl-5">
-      <div className="font-display text-5xl font-semibold text-bone md:text-6xl">
-        <motion.span>{rounded}</motion.span>
-        <span className="text-blood">{suffix}</span>
-      </div>
-      <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.25em] text-smoke">{label}</p>
-    </div>
-  );
-}
-
-/* ------------------------------ Magnetic button ------------------------------ */
-
-export function Magnetic({ children, className }: { children: ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 180, damping: 14 });
-  const sy = useSpring(y, { stiffness: 180, damping: 14 });
-
-  function onMove(e: MouseEvent<HTMLDivElement>) {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    x.set((e.clientX - (r.left + r.width / 2)) * 0.25);
-    y.set((e.clientY - (r.top + r.height / 2)) * 0.35);
-  }
-  function onLeave() {
-    x.set(0);
-    y.set(0);
-  }
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={{ x: sx, y: sy }}
-      className={cn("inline-block", className)}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-/* ------------------------------ CTA buttons ------------------------------ */
-
-const btnBase =
-  "group inline-flex items-center gap-3 px-7 py-4 font-mono text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300";
-
-export function CallButton({ className, label = "Call the workshop" }: { className?: string; label?: string }) {
-  return (
-    <a href={PHONE_HREF} className={cn(btnBase, "bg-blood text-white hover:bg-ember", className)}>
-      <Phone className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-      {label}
-      <span className="hidden font-normal normal-case tracking-normal text-white/70 sm:inline">· {PHONE}</span>
-    </a>
-  );
-}
-
-export function WhatsAppButton({ className, label = "Message on WhatsApp" }: { className?: string; label?: string }) {
-  return (
-    <a
-      href={WHATSAPP}
-      target="_blank"
-      rel="noreferrer"
-      className={cn(
-        btnBase,
-        "border border-line bg-ink/40 text-bone backdrop-blur hover:border-blood hover:text-blood",
-        className
+      {action && (
+        <Reveal delay={0.12} className="shrink-0">
+          {action}
+        </Reveal>
       )}
-    >
-      <MessageCircle className="h-4 w-4" />
-      {label}
-    </a>
+    </div>
   );
 }
+
+/* ------------------------------ StarRating ------------------------------ */
+
+export function StarRating({ rating, className }: { rating: number; className?: string }) {
+  const full = Math.floor(rating);
+  const half = rating - full >= 0.5;
+  return (
+    <span className={cn("inline-flex items-center gap-0.5 text-star", className)}>
+      {Array.from({ length: full }).map((_, i) => (
+        <Star key={i} className="h-3.5 w-3.5 fill-current" />
+      ))}
+      {half && <StarHalf className="h-3.5 w-3.5 fill-current" />}
+      {Array.from({ length: 5 - full - (half ? 1 : 0) }).map((_, i) => (
+        <Star key={`e${i}`} className="h-3.5 w-3.5 text-line" />
+      ))}
+    </span>
+  );
+}
+
+/* ------------------------------ ArrowLink ------------------------------ */
 
 export function ArrowLink({ to, children, className }: { to: string; children: ReactNode; className?: string }) {
   return (
     <Link
       to={to}
       className={cn(
-        "group inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.2em] text-blood transition-colors hover:text-ember",
+        "group inline-flex items-center gap-2 text-sm font-semibold text-blood transition-colors hover:text-ember",
         className
       )}
     >
       {children}
-      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+      <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
     </Link>
   );
 }
@@ -237,20 +199,20 @@ export function PageHero({
   description?: string;
 }) {
   return (
-    <header className="blueprint noise relative overflow-hidden border-b border-line bg-ink">
+    <header className="relative overflow-hidden border-b border-line bg-coal">
       <div className="pointer-events-none absolute -top-40 right-[-10%] h-[480px] w-[480px] rounded-full bg-blood/10 blur-[140px]" />
-      <div className="mx-auto max-w-7xl px-6 pt-40 pb-16 md:pt-48 md:pb-24">
+      <div className="mx-auto max-w-7xl px-4 pt-32 pb-12 sm:px-6 md:pt-40 md:pb-16">
         <Reveal>
           <SectionTag>{tag}</SectionTag>
         </Reveal>
-        <Reveal delay={0.08}>
-          <h1 className="mt-6 max-w-4xl font-display text-5xl font-semibold uppercase leading-[1.02] tracking-tight text-bone sm:text-6xl md:text-7xl">
+        <Reveal delay={0.06}>
+          <h1 className="mt-5 max-w-4xl font-display text-4xl font-semibold uppercase leading-[1.02] tracking-tight text-bone sm:text-5xl md:text-6xl">
             {title}
           </h1>
         </Reveal>
         {description && (
-          <Reveal delay={0.16}>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-smoke md:text-lg">{description}</p>
+          <Reveal delay={0.12}>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-smoke md:text-lg">{description}</p>
           </Reveal>
         )}
       </div>
@@ -262,31 +224,42 @@ export function PageHero({
 
 export function CTABand() {
   return (
-    <section className="noise relative overflow-hidden border-t border-line bg-coal">
-      <div className="blueprint absolute inset-0 opacity-60" />
-      <div className="pointer-events-none absolute -bottom-32 left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-blood/15 blur-[140px]" />
-      <div className="relative mx-auto max-w-7xl px-6 py-24 text-center md:py-32">
+    <section className="relative overflow-hidden bg-blood">
+      <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[720px] -translate-x-1/2 rounded-full bg-white/10 blur-[120px]" />
+      <div className="relative mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 md:py-20">
         <Reveal>
-          <SectionTag className="justify-center">Open Mon – Sat · 8:00 AM – 7:00 PM</SectionTag>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <h2 className="mx-auto mt-6 max-w-3xl font-display text-4xl font-semibold uppercase leading-[1.02] text-bone sm:text-5xl md:text-6xl">
-            Let's get your car <span className="text-stroke-red">fixed right.</span>
-          </h2>
-        </Reveal>
-        <Reveal delay={0.16}>
-          <p className="mx-auto mt-5 max-w-xl text-smoke">
-            One call is all it takes. Tell us the symptom — we'll tell you exactly what happens next.
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.35em] text-white/80">
+            Open Mon – Sat · 8:00 AM – 7:00 PM
           </p>
         </Reveal>
-        <Reveal delay={0.24}>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Magnetic>
-              <CallButton />
-            </Magnetic>
-            <Magnetic>
-              <WhatsAppButton />
-            </Magnetic>
+        <Reveal delay={0.06}>
+          <h2 className="mx-auto mt-4 max-w-3xl font-display text-4xl font-semibold uppercase leading-[1.03] text-white md:text-5xl">
+            Let's get your car — and your order — sorted.
+          </h2>
+        </Reveal>
+        <Reveal delay={0.12}>
+          <p className="mx-auto mt-4 max-w-xl text-white/85">
+            One message is all it takes. Tell us the part or the symptom and we'll handle the rest.
+          </p>
+        </Reveal>
+        <Reveal delay={0.18}>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href={PHONE_HREF}
+              className="inline-flex items-center justify-center gap-2.5 bg-white px-7 py-4 text-sm font-bold uppercase tracking-wider text-blood transition-colors hover:bg-ink"
+            >
+              <Phone className="h-4 w-4" />
+              Call · {PHONE}
+            </a>
+            <a
+              href={WHATSAPP}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2.5 border border-white/70 px-7 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-blood"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Chat on WhatsApp
+            </a>
           </div>
         </Reveal>
       </div>
