@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-display: "Oswald", "Arial Narrow", sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
@@ -16,11 +18,13 @@
   --color-smoke: #6f6f79;    /* muted text */
   --color-mist: #fafafa;     /* ultra-light fill */
   --color-star: #f68b1e;     /* rating stars / sale orange (Jumia nod) */
+  --color-noir: #16161a;     /* always-dark band — stays dark in BOTH themes */
 
   --animate-marquee: marquee 32s linear infinite;
   --animate-blink: blink 1s step-end infinite;
   --animate-float: float 3s ease-in-out infinite;
   --animate-ticker: ticker 22s linear infinite;
+  --animate-scanline: scanline 2.6s linear infinite;
 
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -38,6 +42,10 @@
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
+  @keyframes scanline {
+    0% { top: -10%; }
+    100% { top: 110%; }
+  }
 }
 
 :root {
@@ -48,6 +56,49 @@
   --overlay-partial: rgba(255, 255, 255, 0.75);
   --overlay-light: rgba(255, 255, 255, 0.25);
   --overlay-img: rgba(255, 255, 255, 0.85);
+
+  /* hairline used by .text-stroke + .blueprint */
+  --stroke-ink: rgba(22, 22, 26, 0.5);
+  --grid-ink: rgba(22, 22, 26, 0.035);
+
+  --scroll-track: #f0f0f2;
+  --scroll-thumb: #c9c9cf;
+  --shadow-ink: 22, 22, 26;
+
+  color-scheme: light;
+}
+
+/* ---------- Dark theme overrides ---------- */
+
+.dark {
+  --color-ink: #08080a;
+  --color-coal: #0e0e11;
+  --color-panel: #131318;
+  --color-line: #222229;
+  --color-bone: #f5f4f2;
+  --color-smoke: #9c9ca4;
+  --color-mist: #101014;
+  --color-blood: #ff2d20;
+  --color-ember: #ff4a3d;
+  /* noir stays dark in both themes, but lifts slightly off the dark page bg */
+  --color-noir: #17171c;
+
+  --overlay-from: rgba(8, 8, 10, 1);
+  --overlay-mid: rgba(8, 8, 10, 0.82);
+  --overlay-subtle: rgba(8, 8, 10, 0.35);
+  --overlay-fade: rgba(8, 8, 10, 0.65);
+  --overlay-partial: rgba(8, 8, 10, 0.75);
+  --overlay-light: rgba(8, 8, 10, 0.25);
+  --overlay-img: rgba(8, 8, 10, 0.85);
+
+  --stroke-ink: rgba(245, 244, 242, 0.55);
+  --grid-ink: rgba(245, 244, 242, 0.05);
+
+  --scroll-track: #0e0e11;
+  --scroll-thumb: #2c2c34;
+  --shadow-ink: 0, 0, 0;
+
+  color-scheme: dark;
 }
 
 html {
@@ -60,6 +111,7 @@ body {
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
@@ -72,11 +124,11 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #f0f0f2;
+  background: var(--scroll-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: #c9c9cf;
-  border: 2px solid #f0f0f2;
+  background: var(--scroll-thumb);
+  border: 2px solid var(--scroll-track);
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -85,7 +137,7 @@ body {
 
 /* Outlined display text (kept subtle for the light store) */
 .text-stroke {
-  -webkit-text-stroke: 1.5px rgba(22, 22, 26, 0.5);
+  -webkit-text-stroke: 1.5px var(--stroke-ink);
   color: transparent;
 }
 .text-stroke-red {
@@ -105,7 +157,7 @@ body {
 /* Subtle grid used on a few section backdrops */
 .blueprint {
   background-image:
-    linear-gradient(to right, rgba(22, 22, 26, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(22, 22, 26, 0.035) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-ink) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-ink) 1px, transparent 1px);
   background-size: 56px 56px;
 }

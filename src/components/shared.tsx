@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { useRef, type MouseEvent, type ReactNode } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
   ArrowUpRight,
@@ -220,6 +220,42 @@ export function PageHero({
   );
 }
 
+/* ------------------------------ Magnetic ------------------------------ */
+
+export function Magnetic({ children, className }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 180, damping: 14 });
+  const sy = useSpring(y, { stiffness: 180, damping: 14 });
+
+  function onMove(e: MouseEvent<HTMLDivElement>) {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    x.set((e.clientX - (r.left + r.width / 2)) * 0.25);
+    y.set((e.clientY - (r.top + r.height / 2)) * 0.35);
+  }
+  function onLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{ x: sx, y: sy }}
+      className={cn("inline-block", className)}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ------------------------------ CTA buttons ------------------------------ */
+
 /* ------------------------------ CTA band ------------------------------ */
 
 export function CTABand() {
@@ -246,7 +282,7 @@ export function CTABand() {
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               href={PHONE_HREF}
-              className="inline-flex items-center justify-center gap-2.5 bg-white px-7 py-4 text-sm font-bold uppercase tracking-wider text-blood transition-colors hover:bg-ink"
+              className="inline-flex items-center justify-center gap-2.5 bg-white px-7 py-4 text-sm font-bold uppercase tracking-wider text-blood transition-colors hover:bg-white/90"
             >
               <Phone className="h-4 w-4" />
               Call · {PHONE}
@@ -255,7 +291,7 @@ export function CTABand() {
               href={WHATSAPP}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2.5 border border-white/70 px-7 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-blood"
+              className="inline-flex items-center justify-center gap-2.5 border border-white/70 px-7 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-ink hover:text-blood"
             >
               <MessageCircle className="h-4 w-4" />
               Chat on WhatsApp

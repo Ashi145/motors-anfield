@@ -16,14 +16,14 @@ export default function CartDrawer() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={() => setOpen(false)}
-            className="fixed inset-0 z-[80] bg-bone/40 backdrop-blur-sm"
+            className="fixed inset-0 z-[80] bg-noir/40 backdrop-blur-sm"
           />
           <motion.aside
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-y-0 right-0 z-[90] flex w-full max-w-md flex-col bg-white shadow-2xl"
+            className="fixed inset-y-0 right-0 z-[90] flex w-full max-w-md flex-col bg-panel shadow-2xl"
           >
             <div className="flex items-center justify-between border-b border-line px-5 py-4">
               <h2 className="flex items-center gap-2 font-display text-lg font-semibold uppercase tracking-wide text-bone">

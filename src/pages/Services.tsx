@@ -14,7 +14,7 @@ const process = [
 
 function ServiceCard({ s }: { s: (typeof services)[number] }) {
   return (
-    <div className="flex h-full flex-col rounded-xl border border-line bg-white p-6 transition-all duration-300 hover:border-blood/40 hover:shadow-[0_14px_40px_rgba(22,22,26,0.08)]">
+    <div className="flex h-full flex-col rounded-xl border border-line bg-panel p-6 transition-all duration-300 hover:border-blood/40 hover:shadow-[0_14px_40px_rgba(22,22,26,0.08)]">
       <div className="flex items-center justify-between">
         <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-coal text-blood">
           <IconByName name={s.icon} className="h-6 w-6" />
@@ -86,7 +86,7 @@ export default function Services() {
       </header>
 
       {/* Wiring services */}
-      <section id="wiring" className="relative scroll-mt-32 overflow-hidden bg-bone text-white">
+      <section id="wiring" className="relative scroll-mt-32 overflow-hidden bg-noir text-white">
         <div className="blueprint absolute inset-0 opacity-40" />
         <div className="pointer-events-none absolute -right-32 top-0 h-96 w-96 rounded-full bg-blood/25 blur-[140px]" />
         <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20">
@@ -148,7 +148,7 @@ export default function Services() {
       </section>
 
       {/* General services */}
-      <section className="bg-white">
+      <section className="bg-ink">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20">
           <Reveal>
             <SectionTag>Workshop services</SectionTag>
@@ -182,7 +182,7 @@ export default function Services() {
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {process.map((p, i) => (
               <Reveal key={p.step} delay={i * 0.06} className="h-full">
-                <div className="relative h-full rounded-xl border border-line bg-white p-5">
+                <div className="relative h-full rounded-xl border border-line bg-panel p-5">
                   <span className="font-display text-3xl font-bold text-line">{p.step}</span>
                   <h3 className="mt-3 font-display text-base font-semibold uppercase tracking-wide text-bone">
                     {p.title}

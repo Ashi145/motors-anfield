@@ -21,7 +21,7 @@ const helpLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-line bg-white">
+    <footer className="border-t border-line bg-ink">
       {/* newsletter */}
       <div className="border-b border-line bg-coal">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 sm:px-6 md:flex-row">
@@ -33,7 +33,7 @@ export default function Footer() {
           </div>
           <form
             onSubmit={(e) => e.preventDefault()}
-            className="flex w-full max-w-md items-center overflow-hidden rounded-lg border border-line bg-white"
+            className="flex w-full max-w-md items-center overflow-hidden rounded-lg border border-line bg-panel"
           >
             <input
               type="email"

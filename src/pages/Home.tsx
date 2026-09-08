@@ -13,6 +13,7 @@ import {
 import { Reveal, SectionTag, SectionHeading, StarRating, IconByName, CTABand, ArrowLink } from "@/components/shared";
 import ProductCard from "@/components/ProductCard";
 import Countdown from "@/components/Countdown";
+import DiagnosticTerminal from "@/components/DiagnosticTerminal";
 
 const categoryImages: Record<string, string> = {
   "auto-spares": "./images/products/filters-plugs.jpg",
@@ -55,14 +56,14 @@ function Hero() {
           <div className="mt-9 flex flex-col gap-3.5 sm:flex-row">
             <Link
               to="/shop"
-              className="group inline-flex items-center justify-center gap-2.5 rounded-lg bg-white px-8 py-4 text-sm font-bold uppercase tracking-wider text-blood transition-colors hover:bg-ink"
+              className="group inline-flex items-center justify-center gap-2.5 rounded-lg bg-white px-8 py-4 text-sm font-bold uppercase tracking-wider text-blood transition-colors hover:bg-white/90"
             >
               Shop now
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link
               to="/services?focus=wiring"
-              className="inline-flex items-center justify-center gap-2.5 rounded-lg border border-white/60 px-8 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-white hover:text-blood"
+              className="inline-flex items-center justify-center gap-2.5 rounded-lg border border-white/60 px-8 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-ink hover:text-blood"
             >
               <MessageCircle className="h-4 w-4" />
               Book wiring service
@@ -93,7 +94,7 @@ function Hero() {
 
 function CategoryTiles() {
   return (
-    <section className="border-b border-line bg-white">
+    <section className="border-b border-line bg-ink">
       <div className="mx-auto grid max-w-7xl grid-cols-3 gap-x-2 gap-y-6 px-4 py-8 sm:grid-cols-6 sm:px-6">
         {categories.map((c, i) => (
           <Reveal key={c.id} delay={i * 0.05}>
@@ -163,7 +164,7 @@ function FlashSale() {
 
 function CategoryCards() {
   return (
-    <section className="bg-white">
+    <section className="bg-ink">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-20">
         <SectionHeading
           tag="Shop by category"
@@ -180,7 +181,7 @@ function CategoryCards() {
             <Reveal key={c.id} delay={(i % 3) * 0.07}>
               <Link
                 to={`/shop?cat=${c.id}`}
-                className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-all duration-300 hover:border-blood/40 hover:shadow-[0_14px_40px_rgba(22,22,26,0.10)]"
+                className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-panel transition-all duration-300 hover:border-blood/40 hover:shadow-[0_14px_40px_rgba(22,22,26,0.10)]"
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-mist">
                   <img
@@ -236,11 +237,62 @@ function FeaturedProducts() {
   );
 }
 
+/* ------------------------------ Diagnostics ------------------------------ */
+
+function Diagnostics() {
+  return (
+    <section className="border-b border-line bg-ink">
+      <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-2">
+        <div>
+          <Reveal>
+            <SectionTag>How we find the real fault</SectionTag>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="mt-5 font-display text-4xl font-semibold uppercase leading-[1.02] text-bone md:text-5xl">
+              We scan before <span className="text-stroke-red">we touch a spanner.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="mt-6 max-w-lg leading-relaxed text-smoke">
+              Every car that comes in gets a full computer diagnostic scan first. It tells us exactly
+              which system is misbehaving — so the quote you get is based on the actual fault, not a
+              guess. Watch the terminal: this is what your car's ECU tells us.
+            </p>
+          </Reveal>
+          <Reveal delay={0.24}>
+            <ul className="mt-8 space-y-4">
+              {[
+                "Factory-level OBD-II scanning with live data",
+                "Fault codes explained in plain language",
+                "Itemised quotes before a single bolt is turned",
+              ].map((t) => (
+                <li key={t} className="flex items-start gap-3 text-sm text-bone/80">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rotate-45 bg-blood" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal delay={0.3}>
+            <ArrowLink to="/services" className="mt-8">
+              Book a diagnostic scan
+            </ArrowLink>
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.15}>
+          <DiagnosticTerminal />
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /* ------------------------------ Wiring services ------------------------------ */
 
 function WiringServices() {
   return (
-    <section className="relative overflow-hidden bg-bone text-white">
+    <section className="relative overflow-hidden bg-noir text-white">
       <div className="blueprint absolute inset-0 opacity-40" />
       <div className="pointer-events-none absolute -left-32 top-0 h-96 w-96 rounded-full bg-blood/25 blur-[140px]" />
       <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24">
@@ -323,7 +375,7 @@ function WiringServices() {
 
 function WorkshopServices() {
   return (
-    <section className="bg-white">
+    <section className="bg-ink">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-20">
         <SectionHeading
           tag="Workshop services"
@@ -337,7 +389,7 @@ function WorkshopServices() {
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s, i) => (
             <Reveal key={s.title} delay={(i % 3) * 0.07} className="h-full">
-              <div className="group flex h-full flex-col rounded-xl border border-line bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blood/40 hover:shadow-[0_14px_40px_rgba(22,22,26,0.08)]">
+              <div className="group flex h-full flex-col rounded-xl border border-line bg-panel p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blood/40 hover:shadow-[0_14px_40px_rgba(22,22,26,0.08)]">
                 <div className="flex items-center justify-between">
                   <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-coal text-blood transition-colors group-hover:bg-blood group-hover:text-white">
                     <IconByName name={s.icon} className="h-5 w-5" />
@@ -450,7 +502,7 @@ function VisualGallery() {
                   }}
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
                   <figcaption>
                     <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-blood">
@@ -541,7 +593,7 @@ function BrandStrip() {
 
 function Perks() {
   return (
-    <section className="border-b border-line bg-white">
+    <section className="border-b border-line bg-ink">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-4 gap-y-8 px-4 py-12 sm:px-6 md:grid-cols-3 lg:grid-cols-6">
         {perks.map((p, i) => (
           <Reveal key={p.title} delay={i * 0.05}>
@@ -563,7 +615,7 @@ function Perks() {
 
 function Testimonials() {
   return (
-    <section className="bg-white">
+    <section className="bg-ink">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-20">
         <SectionHeading
           tag="Customer reviews"
@@ -576,7 +628,7 @@ function Testimonials() {
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.08} className="h-full">
-              <figure className="flex h-full flex-col rounded-xl border border-line bg-white p-6">
+              <figure className="flex h-full flex-col rounded-xl border border-line bg-panel p-6">
                 <StarRating rating={t.rating} />
                 <blockquote className="mt-4 flex-1 leading-relaxed text-bone/90">“{t.quote}”</blockquote>
                 <figcaption className="mt-5 flex items-center gap-3">
@@ -607,6 +659,7 @@ export default function Home() {
       <FlashSale />
       <CategoryCards />
       <FeaturedProducts />
+      <Diagnostics />
       <WiringServices />
       <WorkshopServices />
       <VisualGallery />

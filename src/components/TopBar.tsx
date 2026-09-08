@@ -3,7 +3,7 @@ import { PHONE, PHONE_HREF, WHATSAPP, EMAIL, EMAIL_HREF } from "@/data/content";
 
 export default function TopBar() {
   return (
-    <div className="bg-bone text-white">
+    <div className="bg-noir text-white">
       <div className="mx-auto flex h-9 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-4">
           <a href={PHONE_HREF} className="flex items-center gap-1.5 text-[12px] font-medium hover:text-white/80">

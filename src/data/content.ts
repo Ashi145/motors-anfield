@@ -269,6 +269,82 @@ export const products: Product[] = [
   },
 ];
 
+export interface PartCategory {
+  id: string;
+  icon: string;
+  name: string;
+  description: string;
+  items: string[];
+  brands: string[];
+}
+
+export const partCategories: PartCategory[] = [
+  {
+    id: "engine-internals",
+    icon: "Cylinder",
+    name: "Engine Internals",
+    description: "The parts that decide whether an engine lives another 200,000 km.",
+    items: ["Pistons & rings", "Main & big-end bearings", "Head gaskets & full sets", "Timing chains & kits", "Oil pumps", "Valve train components"],
+    brands: ["Range Rover", "BMW", "Toyota"],
+  },
+  {
+    id: "air-suspension",
+    icon: "Waves",
+    name: "Air Suspension",
+    description: "Our signature specialty. Range Rover air systems, fixed properly.",
+    items: ["Compressors & relay kits", "Air struts & springs", "Valve blocks", "Height sensors", "Line & fitting repair", "Calibration after repair"],
+    brands: ["Range Rover", "Land Rover", "Discovery"],
+  },
+  {
+    id: "braking",
+    icon: "Disc3",
+    name: "Braking",
+    description: "The system you bet your life on — no compromises, no mystery pads.",
+    items: ["Pads & discs", "Calipers & carriers", "ABS sensors & modules", "Brake lines & hoses", "Master cylinders", "Fluid flush service"],
+    brands: ["BMW", "Range Rover", "Toyota"],
+  },
+  {
+    id: "filtration",
+    icon: "Filter",
+    name: "Filtration & Fluids",
+    description: "Cheap insurance. The most ignored service items do the most damage when skipped.",
+    items: ["Oil, air & fuel filters", "Cabin filters", "OEM-spec oils", "Coolant & additives", "ATF & differential oils", "Brake fluid"],
+    brands: ["All three brands"],
+  },
+  {
+    id: "electrical",
+    icon: "Zap",
+    name: "Ignition & Electrical",
+    description: "Modern cars are electrical systems with wheels. We speak fluent voltage.",
+    items: ["Ignition coils & plugs", "Crank & cam sensors", "MAF / MAP sensors", "Alternators & starters", "Batteries & testing", "Wiring fault repair"],
+    brands: ["BMW", "Range Rover"],
+  },
+  {
+    id: "cooling",
+    icon: "Thermometer",
+    name: "Cooling & Climate",
+    description: "Ugandan heat is a cooling system's worst enemy. We keep engines at operating temperature.",
+    items: ["Radiators & intercoolers", "Water pumps", "Thermostats & housings", "Fan clutches & fans", "A/C compressors", "Hoses & clamps"],
+    brands: ["Toyota", "Range Rover", "BMW"],
+  },
+  {
+    id: "turbo-fuel",
+    icon: "Fan",
+    name: "Turbo & Fuel",
+    description: "Boost and fuel delivery — where diagnosis saves you from buying parts you don't need.",
+    items: ["Turbochargers & actuators", "Injectors & seals", "High-pressure fuel pumps", "Fuel rails & regulators", "Intercooler pipes", "Boost leak testing"],
+    brands: ["BMW", "Range Rover", "Toyota"],
+  },
+  {
+    id: "transmission",
+    icon: "Cog",
+    name: "Transmission & Driveline",
+    description: "Power is useless if it can't reach the wheels smoothly.",
+    items: ["Gearbox service & ATF", "Clutch kits", "CV joints & boots", "Differential rebuilds", "Engine & gearbox mounts", "Propshaft work"],
+    brands: ["Toyota", "Land Rover", "BMW"],
+  },
+];
+
 /* ------------------------------ SERVICES ------------------------------ */
 
 export interface Service {
