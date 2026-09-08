@@ -25,46 +25,96 @@ function ScrollToTop() {
 /* ------------------------------ Preloader ------------------------------ */
 
 function Preloader() {
-  const [count, setCount] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const t = setInterval(() => {
-      setCount((c) => {
-        const next = c + Math.floor(Math.random() * 14) + 6;
+      setProgress((p) => {
+        const next = p + Math.floor(Math.random() * 11) + 5;
         return next >= 100 ? 100 : next;
       });
-    }, 90);
+    }, 85);
     return () => clearInterval(t);
   }, []);
 
   return (
     <motion.div
       exit={{ y: "-100%" }}
-      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-ink"
+      transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-ink"
     >
+      {/* Ambient scanline */}
+      <motion.span
+        className="pointer-events-none absolute left-0 h-px w-full bg-blood/50"
+        initial={{ top: "12%" }}
+        animate={{ top: "88%" }}
+        transition={{ duration: 1.6, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
+      />
+      <span className="pointer-events-none absolute -right-10 top-8 select-none font-display text-[22vw] font-bold uppercase leading-none tracking-tight text-bone/[0.035]">
+        Store
+      </span>
+
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.86 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="flex items-center gap-3"
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        className="bg-panel px-6 py-5 shadow-2xl"
       >
-        <img
-          src="/images/anfield-motors-logo.png"
-          alt="Anfield Motors"
-          className="h-12 w-auto"
-        />
+        <svg viewBox="0 0 360 230" className="h-28 w-44 text-bone sm:h-32 sm:w-52" role="img" aria-label="Anfield Motors">
+          <motion.ellipse
+            cx="180" cy="115" rx="174" ry="108" fill="none" stroke="currentColor" strokeWidth="9"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 0.9, ease: "easeInOut" }}
+          />
+          <motion.ellipse
+            cx="180" cy="115" rx="163" ry="96" fill="none" stroke="currentColor" strokeWidth="3"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.12, ease: "easeInOut" }}
+          />
+          <g transform="skewX(-8)">
+            <motion.text
+              x="198" y="105" fill="currentColor" textAnchor="middle"
+              fontFamily="Oswald, Arial Narrow, sans-serif" fontWeight="700" fontSize="67" letterSpacing="-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.45 }}
+            >
+              ANFIELD
+            </motion.text>
+            <motion.rect
+              x="42" y="126" width="32" height="8" fill="var(--color-blood)"
+              style={{ originX: "0%" }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
+            />
+            <motion.text
+              x="199" y="168" fill="currentColor" textAnchor="middle"
+              fontFamily="Oswald, Arial Narrow, sans-serif" fontWeight="700" fontSize="67" letterSpacing="-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.58 }}
+            >
+              MOTORS
+            </motion.text>
+          </g>
+        </svg>
       </motion.div>
-      <div className="mt-8 h-px w-48 bg-line">
-        <motion.div
-          className="h-full bg-blood"
-          style={{ width: `${count}%` }}
-          transition={{ ease: "linear" }}
-        />
+
+      <div className="mt-8 w-56 sm:w-64">
+        <div className="flex items-end justify-between">
+          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-smoke">Loading the store</p>
+          <span className="font-display text-lg font-semibold leading-none text-blood">{progress}%</span>
+        </div>
+        <div className="mt-2 h-1 w-full bg-line">
+          <motion.div className="h-full bg-blood" style={{ width: `${progress}%` }} transition={{ ease: "linear" }} />
+        </div>
+        <p className="mt-3 text-center font-mono text-[8px] uppercase tracking-[0.35em] text-smoke">
+          Kireka · Kampala–Jinja Highway
+        </p>
       </div>
-      <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.4em] text-smoke">
-        Warming up the diagnostics · {count}%
-      </p>
     </motion.div>
   );
 }
