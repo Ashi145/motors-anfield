@@ -80,7 +80,7 @@ export default function Shop() {
         <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
           {/* sidebar */}
           <aside className="lg:sticky lg:top-40 lg:self-start">
-            <div className="rounded-xl border border-line bg-white p-5">
+            <div className="rounded-xl border border-line bg-panel p-5">
               <div className="flex items-center justify-between">
                 <h3 className="flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-wide text-bone">
                   <SlidersHorizontal className="h-4 w-4 text-blood" /> Categories
@@ -128,7 +128,7 @@ export default function Shop() {
               </ul>
             </div>
 
-            <div className="mt-4 rounded-xl border border-line bg-white p-5">
+            <div className="mt-4 rounded-xl border border-line bg-panel p-5">
               <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-bone">Sort by</h3>
               <div className="mt-3 flex flex-wrap gap-2">
                 {sorts.map((s) => (

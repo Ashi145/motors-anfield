@@ -23,7 +23,7 @@ export default function ProductCard({ product }: { product: Product }) {
   );
 
   return (
-    <div className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-all duration-300 hover:-translate-y-1 hover:border-blood/40 hover:shadow-[0_14px_40px_rgba(22,22,26,0.10)]">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-panel transition-all duration-300 hover:-translate-y-1 hover:border-blood/40 hover:shadow-[0_14px_40px_rgba(22,22,26,0.10)]">
       {/* image */}
       <div className="relative aspect-square overflow-hidden bg-mist">
         <img
@@ -43,7 +43,7 @@ export default function ProductCard({ product }: { product: Product }) {
             <span
               className={
                 "rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white " +
-                (product.badge === "Official" ? "bg-bone" : "bg-star")
+                (product.badge === "Official" ? "bg-noir" : "bg-star")
               }
             >
               {product.badge}

@@ -1,15 +1,17 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, ShoppingCart, User } from "lucide-react";
+import { Search, ShoppingCart, Sun, Moon, User } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { categories } from "@/data/content";
 import { useCart } from "@/lib/cart";
 import Logo from "@/components/Logo";
+import { useTheme } from "@/lib/theme";
 
 const categoryLinks = [
   { to: "/shop", label: "All Products" },
   ...categories.slice(0, 6).map((c) => ({ to: `/shop?cat=${c.id}`, label: c.name })),
   { to: "/services", label: "Services" },
+  { to: "/parts", label: "Spare Parts" },
   { to: "/brands", label: "Brands" },
   { to: "/story", label: "About" },
   { to: "/contact", label: "Contact" },
@@ -49,6 +51,7 @@ function SearchBar({ className }: { className?: string }) {
 
 export default function Navbar() {
   const { count, setOpen } = useCart();
+  const { theme, toggle } = useTheme();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
@@ -62,7 +65,7 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b border-line bg-white transition-shadow duration-300",
+        "sticky top-0 z-50 border-b border-line bg-ink transition-shadow duration-300",
         scrolled && "shadow-[0_6px_24px_rgba(22,22,26,0.07)]"
       )}
     >
@@ -73,6 +76,14 @@ export default function Navbar() {
         <SearchBar className="ml-auto hidden max-w-xl flex-1 md:flex" />
 
         <div className="ml-auto flex items-center gap-1.5 md:ml-0">
+          <button
+            onClick={toggle}
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-smoke transition-colors hover:text-blood"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
           <button
             className="flex h-11 w-11 items-center justify-center rounded-lg text-smoke transition-colors hover:text-blood"
             aria-label="Account"
@@ -101,7 +112,7 @@ export default function Navbar() {
       </div>
 
       {/* category strip */}
-      <nav className="border-t border-line bg-white">
+      <nav className="border-t border-line bg-ink">
         <div className="no-scrollbar mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 sm:px-6">
           {categoryLinks.map((l) => {
             const [path, qs] = l.to.split("?");
