@@ -7,7 +7,7 @@ interface ThemeCtx {
   toggle: () => void;
 }
 
-const Ctx = createContext<ThemeCtx>({ theme: "dark", toggle: () => {} });
+const Ctx = createContext<ThemeCtx>({ theme: "light", toggle: () => {} });
 
 export function useTheme() {
   return useContext(Ctx);
@@ -18,8 +18,9 @@ function getInitial(): Theme {
     const stored = localStorage.getItem("anfield-theme") as Theme | null;
     if (stored === "dark" || stored === "light") return stored;
   } catch {}
-  if (window.matchMedia?.("(prefers-color-scheme: light)").matches) return "light";
-  return "dark";
+  // The store ships light-first; only follow the OS when it explicitly asks for dark.
+  if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) return "dark";
+  return "light";
 }
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
@@ -52,5 +53,9 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  return <Ctx.Provider value={{ theme, toggle: () => setTheme((t) => (t === "dark" ? "light" : "dark")) }}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={{ theme, toggle: () => setTheme((t) => (t === "dark" ? "light" : "dark")) }}>
+      {children}
+    </Ctx.Provider>
+  );
 }

@@ -37,7 +37,7 @@ export default function Contact() {
         description="Call, WhatsApp, or send the form — describe the symptom and we'll tell you exactly what happens next. First step is always the same: a full scan."
       />
 
-      <section className="bg-ink">
+      <section className="bg-ink px-6">
         <div className="mx-auto grid max-w-7xl gap-px border border-line bg-line lg:grid-cols-3">
           {[
             {
@@ -175,9 +175,9 @@ export default function Contact() {
               </a>
             </Reveal>
             <Reveal delay={0.22}>
-              <div className="relative flex-1 overflow-hidden border border-line">
+              <div className="media-dark relative flex-1 overflow-hidden border border-line">
                 <img
-                  src="/images/diagnostics.jpg"
+                  src="./images/diagnostics.jpg"
                   alt="Diagnostics laptop connected to a vehicle"
                   className="h-full min-h-[220px] w-full object-cover"
                 />

@@ -37,7 +37,7 @@ function BrandBlock({ brand, flip }: { brand: (typeof brands)[number]; flip: boo
         <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* image */}
           <Reveal className={cn(flip && "lg:order-2")}>
-            <div className="group relative overflow-hidden border border-line">
+            <div className="media-dark group relative overflow-hidden border border-line">
               <motion.img
                 style={{ y: imgY }}
                 src={brand.image}
@@ -56,7 +56,7 @@ function BrandBlock({ brand, flip }: { brand: (typeof brands)[number]; flip: boo
                 <Link
                   key={e}
                   to="/engines"
-                  className="border border-line px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-smoke transition-all hover:border-blood hover:text-blood"
+                  className="border border-line px-3 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-smoke transition-all hover:border-blood hover:text-blood min-h-[44px]"
                 >
                   {e}
                 </Link>

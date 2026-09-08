@@ -73,19 +73,19 @@ export default function Story() {
             </Reveal>
           </div>
           <Reveal delay={0.1}>
-            <div ref={ref} className="relative overflow-hidden border border-line">
+            <div ref={ref} className="media-dark relative overflow-hidden border border-line">
               <motion.img
                 style={{ y: imgY }}
-                src="/images/workshop.jpg"
+                src="./images/workshop.jpg"
                 alt="Anfield Motors workshop at night"
                 className="aspect-[4/5] w-full scale-110 object-cover md:aspect-[4/4.6]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between border border-bone/15 bg-ink/80 px-4 py-3 backdrop-blur">
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone">
+              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between gap-3 border border-bone/15 bg-ink/80 px-4 py-3 backdrop-blur">
+                <span className="truncate font-mono text-[10px] uppercase tracking-[0.3em] text-bone">
                   Kireka · Kampala–Jinja Highway
                 </span>
-                <span className="h-2 w-2 animate-blink bg-blood" />
+                <span className="h-2 w-2 shrink-0 animate-blink bg-blood" />
               </div>
             </div>
           </Reveal>
@@ -135,9 +135,9 @@ export default function Story() {
           </Reveal>
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             <Reveal>
-              <div className="group relative overflow-hidden border border-line">
+              <div className="media-dark group relative overflow-hidden border border-line">
                 <img
-                  src="/images/diagnostics.jpg"
+                  src="./images/diagnostics.jpg"
                   alt="Computer diagnostics in progress"
                   className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -148,9 +148,9 @@ export default function Story() {
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <div className="group relative overflow-hidden border border-line">
+              <div className="media-dark group relative overflow-hidden border border-line">
                 <img
-                  src="/images/workshop.jpg"
+                  src="./images/workshop.jpg"
                   alt="Vehicle on the lift at Anfield Motors"
                   className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />

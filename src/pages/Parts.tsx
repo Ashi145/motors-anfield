@@ -70,7 +70,7 @@ export default function Parts() {
       <section className="relative overflow-hidden border-b border-line">
         <div className="relative h-[320px] md:h-[420px]">
           <img
-            src="/images/parts.jpg"
+            src="./images/parts.jpg"
             alt="Spare parts on the workbench at Anfield Motors"
             className="h-full w-full object-cover"
           />

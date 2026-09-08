@@ -63,7 +63,7 @@ function Explorer() {
       </div>
 
       {/* detail */}
-      <div className="relative min-h-[560px] bg-panel">
+      <div className="relative min-h-[350px] bg-panel md:min-h-[560px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={engine.id}

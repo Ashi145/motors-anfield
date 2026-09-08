@@ -41,7 +41,7 @@ export default function DiagnosticTerminal() {
   const current = codes[index];
 
   return (
-    <div className="relative overflow-hidden border border-line bg-panel shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)]">
+    <div className="relative overflow-hidden border border-line bg-panel shadow-[0_24px_60px_-24px_rgba(var(--shadow-ink),0.35)]">
       {/* scanline */}
       <div className="pointer-events-none absolute left-0 h-px w-full animate-scanline bg-blood/60" />
 
@@ -61,7 +61,7 @@ export default function DiagnosticTerminal() {
         <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.25em] text-smoke">
           <span>Protocol: ISO 15765-4 (CAN)</span>
           <span className="flex items-center gap-2">
-            <span className={phase === "scanning" ? "text-blood animate-blink" : "text-emerald-400"}>
+            <span className={phase === "scanning" ? "text-blood animate-blink" : "text-emerald-600 dark:text-emerald-400"}>
               ●
             </span>
             {phase === "scanning" ? "BUS ACTIVE" : "FAULT LOCKED"}
@@ -85,7 +85,7 @@ export default function DiagnosticTerminal() {
                 {phase === "scanning" ? (
                   <span className="animate-blink">READING ECU MEMORY…</span>
                 ) : (
-                  <span className="text-emerald-400">&gt; ROOT CAUSE: {current.result}</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">&gt; ROOT CAUSE: {current.result}</span>
                 )}
               </p>
             </motion.div>
@@ -96,7 +96,7 @@ export default function DiagnosticTerminal() {
         <div className="mt-5">
           <div className="flex justify-between text-[10px] uppercase tracking-[0.25em] text-smoke">
             <span>ECU scan depth</span>
-            <span className={phase === "found" ? "text-emerald-400" : "text-blood"}>
+            <span className={phase === "found" ? "text-emerald-600 dark:text-emerald-400" : "text-blood"}>
               {Math.min(progress, 100)}%
             </span>
           </div>
@@ -112,7 +112,7 @@ export default function DiagnosticTerminal() {
           {["ENGINE", "CHASSIS", "BODY"].map((m, i) => (
             <div key={m} className="border border-line/60 px-2 py-3">
               <p className="text-[9px] uppercase tracking-[0.25em] text-smoke">{m}</p>
-              <p className={`mt-1 text-xs ${i === 0 ? "text-blood" : "text-emerald-400/80"}`}>
+              <p className={`mt-1 text-xs ${i === 0 ? "text-blood" : "text-emerald-600/90 dark:text-emerald-400/80"}`}>
                 {i === 0 ? (phase === "scanning" ? "SCANNING" : "FAULT") : "OK"}
               </p>
             </div>
