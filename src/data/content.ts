@@ -1,9 +1,404 @@
+/* ============================================================
+   Anfield Motors — store data
+   ============================================================ */
+
 export const PHONE = "+256 700 000 000";
 export const PHONE_HREF = "tel:+256700000000";
 export const WHATSAPP = "https://wa.me/256700000000";
+export const EMAIL = "sales@anfieldmotors.ug";
+export const EMAIL_HREF = "mailto:sales@anfieldmotors.ug";
 export const ADDRESS =
   "Kireka, Kampala–Jinja Highway, next to Landing Washing Bay, Wakiso District, Uganda.";
 export const HOURS = "Monday – Saturday · 8:00 AM – 7:00 PM · Sunday by appointment";
+
+/** Format an integer as Ugandan shillings, e.g. 185000 -> "185,000" */
+export function ugx(n: number): string {
+  return new Intl.NumberFormat("en-UG").format(n);
+}
+
+/** Build a WhatsApp deep link with a pre-filled message. */
+export function waLink(message: string): string {
+  return `${WHATSAPP}?text=${encodeURIComponent(message)}`;
+}
+
+/* ------------------------------ CATEGORIES ------------------------------ */
+
+export interface Category {
+  id: string;
+  name: string;
+  icon: string; // lucide icon name
+  blurb: string;
+}
+
+export const categories: Category[] = [
+  { id: "auto-spares", name: "Auto Spares", icon: "Cog", blurb: "Filters, plugs, gaskets & service kits" },
+  { id: "diagnostics", name: "Diagnostics & Tools", icon: "ScanLine", blurb: "Scanners, testers & workshop tools" },
+  { id: "wiring", name: "Wiring & Electrical", icon: "Cable", blurb: "Looms, fuse boxes, harnesses & ECU wiring" },
+  { id: "suspension", name: "Suspension & Brakes", icon: "Waves", blurb: "Air struts, compressors, discs & pads" },
+  { id: "batteries", name: "Batteries & Power", icon: "BatteryCharging", blurb: "Jump starters, chargers & electrical" },
+  { id: "tools", name: "Workshop Equipment", icon: "Wrench", blurb: "Hand tools, kits & garage essentials" },
+];
+
+/* ------------------------------ PRODUCTS ------------------------------ */
+
+export interface Product {
+  id: string;
+  name: string;
+  category: string; // category id
+  brand: string;
+  image: string;
+  price: number; // UGX, current
+  oldPrice?: number; // UGX, before discount
+  rating: number; // 0–5
+  reviews: number;
+  badge?: string;
+  description: string;
+}
+
+export const products: Product[] = [
+  {
+    id: "obd2-scanner",
+    name: "OBD2 Diagnostic Scanner",
+    category: "diagnostics",
+    brand: "Ancel",
+    image: "./images/products/obd2-scanner.jpg",
+    price: 185000,
+    oldPrice: 240000,
+    rating: 4.7,
+    reviews: 330,
+    badge: "Hot Deal",
+    description: "Reads & clears engine codes, live data and freeze-frame on most vehicles from 1996 onward.",
+  },
+  {
+    id: "bluedriver-pro",
+    name: "BlueDriver Pro Bluetooth Scanner",
+    category: "diagnostics",
+    brand: "BlueDriver",
+    image: "./images/products/bluedriver-scanner.png",
+    price: 350000,
+    oldPrice: 420000,
+    rating: 4.9,
+    reviews: 178,
+    badge: "Official",
+    description: "Bluetooth OBD2 dongle with full system scans, live data and repair reports on your phone.",
+  },
+  {
+    id: "socket-set",
+    name: "151pc Socket & Ratchet Set",
+    category: "tools",
+    brand: "Kingbolen",
+    image: "./images/products/socket-set.webp",
+    price: 135000,
+    oldPrice: 180000,
+    rating: 4.6,
+    reviews: 205,
+    description: "High-torque chrome-vanadium sockets, ratchets and bits in a portable carry case.",
+  },
+  {
+    id: "service-kit",
+    name: "Full Service Kit — Filters & Plugs",
+    category: "auto-spares",
+    brand: "Bosch",
+    image: "./images/products/service-kit.jpg",
+    price: 95000,
+    oldPrice: 125000,
+    rating: 4.7,
+    reviews: 212,
+    badge: "Best Seller",
+    description: "Oil, air, fuel and cabin filters plus a spark plug set, matched to your vehicle.",
+  },
+  {
+    id: "oil-filter-combo",
+    name: "Oil & Filter Combo (OEM Spec)",
+    category: "auto-spares",
+    brand: "Liqui Moly",
+    image: "./images/products/oil-filter.jpg",
+    price: 120000,
+    oldPrice: 150000,
+    rating: 4.8,
+    reviews: 96,
+    description: "Full-synthetic engine oil with an OEM-spec filter — the exact service combination we use in the workshop.",
+  },
+  {
+    id: "air-filter-set",
+    name: "Performance Air Filter Set",
+    category: "auto-spares",
+    brand: "Mann Filter",
+    image: "./images/products/air-filters.jpg",
+    price: 65000,
+    oldPrice: 85000,
+    rating: 4.5,
+    reviews: 140,
+    description: "High-flow air filters that protect the engine while keeping breathing effortless.",
+  },
+  {
+    id: "plugs-bundle",
+    name: "Spark Plugs & Filter Bundle",
+    category: "auto-spares",
+    brand: "NGK",
+    image: "./images/products/filters-plugs.jpg",
+    price: 140000,
+    oldPrice: 170000,
+    rating: 4.6,
+    reviews: 88,
+    description: "Iridium spark plugs plus the filters to complete a proper tune-up in one box.",
+  },
+  {
+    id: "gasket-set",
+    name: "Full Engine Gasket Set",
+    category: "auto-spares",
+    brand: "Genuine / OEM",
+    image: "./images/parts.jpg",
+    price: 280000,
+    oldPrice: 350000,
+    rating: 4.7,
+    reviews: 54,
+    description: "Complete top-end and bottom-end gasket kit for engine rebuilds — no mystery seals.",
+  },
+  {
+    id: "air-strut",
+    name: "Range Rover Air Suspension Strut",
+    category: "suspension",
+    brand: "Genuine Range Rover",
+    image: "./images/products/air-strut.jpg",
+    price: 950000,
+    oldPrice: 1150000,
+    rating: 4.9,
+    reviews: 63,
+    badge: "Official",
+    description: "Front or rear air strut for Range Rover & Sport — ride height restored to factory.",
+  },
+  {
+    id: "air-compressor",
+    name: "Air Suspension Compressor Kit",
+    category: "suspension",
+    brand: "WABCO",
+    image: "./images/products/air-strut-2.jpg",
+    price: 720000,
+    oldPrice: 860000,
+    rating: 4.7,
+    reviews: 48,
+    description: "Replacement compressor with relay kit for Range Rover air systems. Fitted & calibrated in-house.",
+  },
+  {
+    id: "brake-kit",
+    name: "Brake Disc & Pad Kit (Front)",
+    category: "suspension",
+    brand: "Brembo",
+    image: "./images/products/brake-kit.jpg",
+    price: 320000,
+    oldPrice: 400000,
+    rating: 4.8,
+    reviews: 121,
+    badge: "Best Seller",
+    description: "Vented discs with ceramic pads for a full front-axle brake refresh. Safety-critical — genuine only.",
+  },
+  {
+    id: "brake-disc",
+    name: "Vented Brake Disc (Single)",
+    category: "suspension",
+    brand: "Brembo",
+    image: "./images/products/brake-disc.jpg",
+    price: 210000,
+    oldPrice: 260000,
+    rating: 4.6,
+    reviews: 97,
+    description: "Balanced, heat-treated vented rotor. Sold as a single unit.",
+  },
+  {
+    id: "brake-rotor",
+    name: "Performance Brake Rotor",
+    category: "suspension",
+    brand: "Wilwood",
+    image: "./images/products/brake-disc-2.jpg",
+    price: 240000,
+    oldPrice: 290000,
+    rating: 4.5,
+    reviews: 41,
+    description: "Slotted performance rotor for spirited driving and heavy vehicles alike.",
+  },
+  {
+    id: "wiring-loom",
+    name: "Standalone Engine Wiring Loom + Fuse Block",
+    category: "wiring",
+    brand: "Anfield Wired",
+    image: "./images/products/wiring-loom.jpg",
+    price: 520000,
+    oldPrice: 640000,
+    rating: 4.8,
+    reviews: 37,
+    badge: "New",
+    description: "Standalone loom with fuse block and OBD2 port — for engine swaps and full re-wires.",
+  },
+  {
+    id: "wiring-classic",
+    name: "12-Circuit Classic Car Wiring Loom",
+    category: "wiring",
+    brand: "Anfield Wired",
+    image: "./images/products/wiring-classic.jpg",
+    price: 380000,
+    oldPrice: 470000,
+    rating: 4.7,
+    reviews: 29,
+    description: "12-circuit loom with fuse box, relays and flasher — everything a classic needs to light up.",
+  },
+  {
+    id: "jump-starter",
+    name: "Portable Jump Starter 20000mAh",
+    category: "batteries",
+    brand: "Halo",
+    image: "./images/products/jump-starter.jpg",
+    price: 240000,
+    oldPrice: 320000,
+    rating: 4.7,
+    reviews: 289,
+    badge: "Hot Deal",
+    description: "Starts flat batteries in seconds — with USB power bank, light and air compressor built in.",
+  },
+  {
+    id: "jump-starter-pro",
+    name: "Jump Starter Power Bank (30000mAh)",
+    category: "batteries",
+    brand: "Maant",
+    image: "./images/products/jump-starter-pro.jpg",
+    price: 180000,
+    oldPrice: 230000,
+    rating: 4.6,
+    reviews: 156,
+    description: "30000mAh booster for petrol and diesel engines, doubling as a fast-charge power bank.",
+  },
+];
+
+/* ------------------------------ SERVICES ------------------------------ */
+
+export interface Service {
+  icon: string;
+  title: string;
+  body: string;
+  price: string;
+  duration: string;
+  includes: string[];
+  tag?: string;
+}
+
+/* Auto-electrical & wiring services — a core speciality */
+export const wiringServices: Service[] = [
+  {
+    icon: "Cable",
+    title: "Full Wiring Harness Replacement",
+    body: "Complete loom manufacture and replacement — from the fuse box to every sensor, switch and light.",
+    price: "From UGX 450,000",
+    duration: "1–3 days",
+    includes: ["New loom built to your vehicle", "Labelled, taped & loomed runs", "Fuse & relay box wired", "Full continuity test"],
+    tag: "Most booked",
+  },
+  {
+    icon: "SearchCheck",
+    title: "Wiring Fault Tracing & Repair",
+    body: "Shorts, open circuits and burnt wires traced methodically — so the real fault gets fixed, not patched.",
+    price: "From UGX 80,000",
+    duration: "Same day",
+    includes: ["Circuit-by-circuit tracing", "Repair of melted / chewed wiring", "Proper solder & heat-shrink joints", "Re-test of the whole circuit"],
+  },
+  {
+    icon: "CircuitBoard",
+    title: "ECU & Module Wiring Repair",
+    body: "Repair of damaged ECU, sensor and actuator wiring — without replacing the module when it doesn't need it.",
+    price: "From UGX 120,000",
+    duration: "Half–1 day",
+    includes: ["Pin-level ECU checks", "CAN-bus & signal testing", "Connector & pin replacement", "Re-programming where needed"],
+  },
+  {
+    icon: "BatteryCharging",
+    title: "Alternator, Starter & Battery Wiring",
+    body: "Charging and starting system rewires — battery cables, earths, alternator and starter feeds done properly.",
+    price: "From UGX 90,000",
+    duration: "Half day",
+    includes: ["Battery & earth cable upgrade", "Alternator / starter feed repair", "Voltage-drop testing", "Charging system verification"],
+  },
+  {
+    icon: "Lightbulb",
+    title: "Lighting & Accessory Wiring",
+    body: "Headlights, spots, alarms, sound systems, reversing cameras and tow-bar electrics — wired safely.",
+    price: "From UGX 60,000",
+    duration: "Same day",
+    includes: ["Auxiliary lighting installs", "Alarm & sound system wiring", "Camera & parking sensors", "Trailer / tow-bar electrics"],
+  },
+  {
+    icon: "ShieldAlert",
+    title: "Airbag & ABS Harness Repair",
+    body: "SRS and ABS wiring repairs done to spec — connectors re-pinned and systems re-scanned and cleared.",
+    price: "From UGX 150,000",
+    duration: "1 day",
+    includes: ["SRS / ABS harness repair", "Connector de-pinning & replacement", "Post-repair scan & calibration", "Warning-light verification"],
+  },
+];
+
+/* General workshop services */
+export const services: Service[] = [
+  {
+    icon: "Wrench",
+    title: "Engine Repair & Rebuild",
+    body: "Full teardown, machining referral, rebuild and reassembly for engines that knock, smoke or overheat.",
+    price: "From UGX 850,000",
+    duration: "3–10 days",
+    includes: ["Full teardown & inspection", "Genuine / OEM internals", "Factory torque & clearance", "Run-in & road test"],
+    tag: "Signature",
+  },
+  {
+    icon: "ScanLine",
+    title: "Computer Diagnostics",
+    body: "OBD-II scanning with live data — we read what the car is actually saying, so the real fault is fixed first time.",
+    price: "From UGX 50,000",
+    duration: "30–60 min",
+    includes: ["Full system scan", "Live data & freeze-frame", "Plain-language explanation", "Itemised quote"],
+  },
+  {
+    icon: "Mountain",
+    title: "Range Rover / Land Rover Care",
+    body: "Air suspension, electrical gremlins and engine work for Range Rover and Land Rover models.",
+    price: "From UGX 150,000",
+    duration: "By job",
+    includes: ["Air suspension repair & calibration", "Electrical & module faults", "Engine & transmission work", "Dealer-level service"],
+  },
+  {
+    icon: "CircleCheck",
+    title: "BMW Servicing",
+    body: "Dealer-level servicing plus engine and electrical repair for BMW saloons and SUVs.",
+    price: "From UGX 120,000",
+    duration: "Half–1 day",
+    includes: ["Dealer-level servicing", "VANOS / timing work", "Cooling system repair", "Oil-leak correction"],
+  },
+  {
+    icon: "Car",
+    title: "Toyota Servicing",
+    body: "General service, engine work and honest repairs for Toyota sedans, SUVs and pickups.",
+    price: "From UGX 90,000",
+    duration: "Half–1 day",
+    includes: ["Scheduled servicing", "1HZ / 2TR engine work", "Suspension & steering", "Fleet servicing"],
+  },
+  {
+    icon: "Activity",
+    title: "Brakes, Suspension & Electrical",
+    body: "Full chassis and electrical repair — pads, discs, shocks, wiring faults and beyond-engine diagnostics.",
+    price: "From UGX 80,000",
+    duration: "Half day",
+    includes: ["Brake pads & discs", "Suspension & bushes", "Wiring fault repair", "Full safety check"],
+  },
+];
+
+/* ------------------------------ PERKS ------------------------------ */
+
+export const perks = [
+  { icon: "BadgeCheck", title: "100% Original Products", body: "Genuine & quality assured" },
+  { icon: "CircleDollarSign", title: "Best Prices in Uganda", body: "Unbeatable market prices" },
+  { icon: "Truck", title: "Fast Delivery", body: "Across Uganda, on time" },
+  { icon: "CreditCard", title: "Secure Payments", body: "MoMo, card or cash" },
+  { icon: "Headphones", title: "Dedicated Support", body: "We're here to help" },
+  { icon: "ShieldCheck", title: "Warranty Included", body: "Parts & workmanship" },
+];
+
+export const paymentMethods = ["MTN MoMo", "Airtel Money", "Cash on Delivery", "Visa", "Mastercard"];
 
 /* ------------------------------ BRANDS ------------------------------ */
 
@@ -30,7 +425,7 @@ export const brands: Brand[] = [
     origin: "Solihull, England — since 1948",
     image: "./images/range-rover.jpg",
     story: [
-      "The Land Rover was born on a farm in Angelsey in 1948, and the Range Rover arrived in 1970 to prove an SUV could be a luxury car. Seventy-five years later, these are some of the most capable — and most complex — vehicles on Ugandan roads.",
+      "The Land Rover was born on a farm in Anglesey in 1948, and the Range Rover arrived in 1970 to prove an SUV could be a luxury car. Seventy-five years later, these are some of the most capable — and most complex — vehicles on Ugandan roads.",
       "Air suspension that lowers itself over speed bumps. Electronics that manage everything from terrain response to seat bolsters. When a Range Rover develops a fault, it is rarely one simple thing — and that is exactly why we built our diagnostic-first process around them.",
     ],
     expertise: [
@@ -318,175 +713,32 @@ export const symptoms = [
 /* ------------------------------ REBUILD STEPS ------------------------------ */
 
 export const rebuildSteps = [
-  {
-    step: "01",
-    title: "Strip & inspect",
-    body: "Full teardown. Every component is inspected, measured and photographed — you see what we see.",
-  },
-  {
-    step: "02",
-    title: "Measure & machine",
-    body: "Crankshaft, bores and head are measured against factory spec. Machining is referred out only where it's genuinely needed.",
-  },
-  {
-    step: "03",
-    title: "Parts & prep",
-    body: "Genuine and OEM internals — pistons, bearings, gaskets, timing kits. No mystery parts, ever.",
-  },
-  {
-    step: "04",
-    title: "Rebuild to spec",
-    body: "Reassembly with factory torque sequences and clearances measured twice. This is where experience shows.",
-  },
-  {
-    step: "05",
-    title: "Run-in & road test",
-    body: "Primed, started, warmed and monitored. Then road-tested and re-checked before handover.",
-  },
-];
-
-/* ------------------------------ PARTS ------------------------------ */
-
-export interface PartCategory {
-  id: string;
-  icon: string;
-  name: string;
-  description: string;
-  items: string[];
-  brands: string[];
-}
-
-export const partCategories: PartCategory[] = [
-  {
-    id: "engine-internals",
-    icon: "Cylinder",
-    name: "Engine Internals",
-    description: "The parts that decide whether an engine lives another 200,000 km.",
-    items: ["Pistons & rings", "Main & big-end bearings", "Head gaskets & full sets", "Timing chains & kits", "Oil pumps", "Valve train components"],
-    brands: ["Range Rover", "BMW", "Toyota"],
-  },
-  {
-    id: "air-suspension",
-    icon: "Waves",
-    name: "Air Suspension",
-    description: "Our signature specialty. Range Rover air systems, fixed properly.",
-    items: ["Compressors & relay kits", "Air struts & springs", "Valve blocks", "Height sensors", "Line & fitting repair", "Calibration after repair"],
-    brands: ["Range Rover", "Land Rover", "Discovery"],
-  },
-  {
-    id: "braking",
-    icon: "Disc3",
-    name: "Braking",
-    description: "The system you bet your life on — no compromises, no mystery pads.",
-    items: ["Pads & discs", "Calipers & carriers", "ABS sensors & modules", "Brake lines & hoses", "Master cylinders", "Fluid flush service"],
-    brands: ["BMW", "Range Rover", "Toyota"],
-  },
-  {
-    id: "filtration",
-    icon: "Filter",
-    name: "Filtration & Fluids",
-    description: "Cheap insurance. The most ignored service items do the most damage when skipped.",
-    items: ["Oil, air & fuel filters", "Cabin filters", "OEM-spec oils", "Coolant & additives", "ATF & differential oils", "Brake fluid"],
-    brands: ["All three brands"],
-  },
-  {
-    id: "electrical",
-    icon: "Zap",
-    name: "Ignition & Electrical",
-    description: "Modern cars are electrical systems with wheels. We speak fluent voltage.",
-    items: ["Ignition coils & plugs", "Crank & cam sensors", "MAF / MAP sensors", "Alternators & starters", "Batteries & testing", "Wiring fault repair"],
-    brands: ["BMW", "Range Rover"],
-  },
-  {
-    id: "cooling",
-    icon: "Thermometer",
-    name: "Cooling & Climate",
-    description: "Ugandan heat is a cooling system's worst enemy. We keep engines at operating temperature.",
-    items: ["Radiators & intercoolers", "Water pumps", "Thermostats & housings", "Fan clutches & fans", "A/C compressors", "Hoses & clamps"],
-    brands: ["Toyota", "Range Rover", "BMW"],
-  },
-  {
-    id: "turbo-fuel",
-    icon: "Fan",
-    name: "Turbo & Fuel",
-    description: "Boost and fuel delivery — where diagnosis saves you from buying parts you don't need.",
-    items: ["Turbochargers & actuators", "Injectors & seals", "High-pressure fuel pumps", "Fuel rails & regulators", "Intercooler pipes", "Boost leak testing"],
-    brands: ["BMW", "Range Rover", "Toyota"],
-  },
-  {
-    id: "transmission",
-    icon: "Cog",
-    name: "Transmission & Driveline",
-    description: "Power is useless if it can't reach the wheels smoothly.",
-    items: ["Gearbox service & ATF", "Clutch kits", "CV joints & boots", "Differential rebuilds", "Engine & gearbox mounts", "Propshaft work"],
-    brands: ["Toyota", "Land Rover", "BMW"],
-  },
-];
-
-/* ------------------------------ SERVICES ------------------------------ */
-
-export const services = [
-  {
-    icon: "Wrench",
-    title: "Engine Repair & Rebuild",
-    body: "Full teardown, machining referral, rebuild and reassembly for engines that knock, smoke, overheat or have lost their pull.",
-  },
-  {
-    icon: "ScanLine",
-    title: "Computer Diagnostics",
-    body: "OBD-II scanning with live data — we read what the car is actually saying, so the real fault gets fixed the first time.",
-  },
-  {
-    icon: "Mountain",
-    title: "Range Rover / Land Rover Care",
-    body: "Air suspension, electrical gremlins and engine work for Range Rover and Land Rover models — our deepest specialty.",
-  },
-  {
-    icon: "Cog",
-    title: "BMW Servicing",
-    body: "Dealer-level servicing plus engine and electrical repair for BMW saloons and SUVs — without dealer invoices.",
-  },
-  {
-    icon: "CircleCheck",
-    title: "Toyota Servicing",
-    body: "General service, engine work and honest repairs for Toyota sedans, SUVs and pickups — kept earning, not parked.",
-  },
-  {
-    icon: "Activity",
-    title: "Brakes, Suspension & Electrical",
-    body: "Full chassis and electrical repair — pads, discs, shocks, wiring faults and the diagnostics that go beyond the engine.",
-  },
-];
-
-/* ------------------------------ PROCESS ------------------------------ */
-
-export const process = [
-  { step: "01", title: "Book", body: "Call or WhatsApp us your car's problem and lock in a time slot." },
-  { step: "02", title: "Diagnose", body: "Full computer scan plus hands-on inspection to confirm the real fault." },
-  { step: "03", title: "Quote", body: "A clear, itemised quote before any work starts. No surprises later." },
-  { step: "04", title: "Repair", body: "Engine, diagnostic or specialist work carried out in our workshop." },
-  { step: "05", title: "Road Test", body: "Every car is road-tested and rechecked before it goes back to you." },
+  { step: "01", title: "Strip & inspect", body: "Full teardown. Every component is inspected, measured and photographed — you see what we see." },
+  { step: "02", title: "Measure & machine", body: "Crankshaft, bores and head are measured against factory spec. Machining is referred out only where it's genuinely needed." },
+  { step: "03", title: "Parts & prep", body: "Genuine and OEM internals — pistons, bearings, gaskets, timing kits. No mystery parts, ever." },
+  { step: "04", title: "Rebuild to spec", body: "Reassembly with factory torque sequences and clearances measured twice. This is where experience shows." },
+  { step: "05", title: "Run-in & road test", body: "Primed, started, warmed and monitored. Then road-tested and re-checked before handover." },
 ];
 
 /* ------------------------------ TESTIMONIALS ------------------------------ */
 
 export const testimonials = [
   {
-    quote:
-      "Anfield sorted out my Range Rover's suspension fault after two other garages couldn't pin it down.",
+    quote: "Anfield sorted out my Range Rover's suspension fault after two other garages couldn't pin it down.",
     name: "Moses",
     place: "Kireka",
+    rating: 5,
   },
   {
-    quote:
-      "Straightforward diagnosis, fair price, and my Toyota runs better than it has in years.",
+    quote: "Straightforward diagnosis, fair price, and my Toyota runs better than it has in years.",
     name: "Grace",
     place: "Namugongo",
+    rating: 5,
   },
   {
-    quote:
-      "They showed me the scan results, explained the quote line by line, and finished on the day they promised. That's rare.",
+    quote: "They showed me the scan results, explained the quote line by line, and finished on the day they promised. That's rare.",
     name: "Daniel",
     place: "Kampala",
+    rating: 4.5,
   },
 ];
